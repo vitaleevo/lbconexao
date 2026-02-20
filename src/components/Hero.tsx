@@ -2,7 +2,7 @@
 
 import React from "react"
 import { motion } from "framer-motion"
-import { ArrowRight, Play, Scale } from "lucide-react"
+import { ArrowRight, Play } from "lucide-react"
 import Link from "next/link"
 
 export default function Hero() {

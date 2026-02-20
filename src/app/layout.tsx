@@ -15,6 +15,10 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "LB Conexão Jurídica | Excelência no Direito Angolano",
   description: "Conectando profissionais, empresas e estudantes em Angola com soluções jurídicas completas e formação prática de alta qualidade.",
+  icons: {
+    icon: "/favicon.jpg",
+    apple: "/apple-touch-icon.jpg",
+  },
 };
 
 export default function RootLayout({

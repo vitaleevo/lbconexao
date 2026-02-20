@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { motion } from "framer-motion"
-import { Scale, CheckCircle2, ArrowRight, Shield, Calculator, FileText, Landmark } from "lucide-react"
+import { CheckCircle2, ArrowRight, Shield, Calculator, FileText, Landmark } from "lucide-react"
 import Link from "next/link"
 
 export default function DireitoFiscalPage() {

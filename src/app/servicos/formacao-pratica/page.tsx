@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { motion } from "framer-motion"
-import { GraduationCap, CheckCircle2, ArrowRight, BookOpen, Users, Compass, Laptop } from "lucide-react"
+import { ArrowRight, BookOpen, Users, Compass, Laptop } from "lucide-react"
 import Link from "next/link"
 
 export default function FormacaoPraticaPage() {
