@@ -2,7 +2,8 @@
 
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
-import ContactForm from "@/components/ContactForm"
+import dynamic from "next/dynamic"
+const ContactForm = dynamic(() => import("@/components/ContactForm"), { ssr: false })
 import { motion } from "framer-motion"
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook } from "lucide-react"
 

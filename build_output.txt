@@ -1,0 +1,65 @@
+
+> lbconexao@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 2 errors:
+./src/components/RichTextEditor.tsx:9:1
+Export default doesn't exist in target module
+   7 | import TextAlign from "@tiptap/extension-text-align";
+   8 | import { Color } from "@tiptap/extension-color";
+>  9 | import TextStyle from "@tiptap/extension-text-style";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import Placeholder from "@tiptap/extension-placeholder";
+  11 | import Highlight from "@tiptap/extension-highlight";
+  12 | import {
+
+The export default was not found in module [project]/node_modules/@tiptap/extension-text-style/dist/index.js [app-client] (ecmascript).
+Did you mean to import LineHeight?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/components/RichTextEditor.tsx [Client Component Browser]
+    ./src/app/conexaolbadm/eventos/page.tsx [Client Component Browser]
+    ./src/app/conexaolbadm/eventos/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/RichTextEditor.tsx [Client Component SSR]
+    ./src/app/conexaolbadm/eventos/page.tsx [Client Component SSR]
+    ./src/app/conexaolbadm/eventos/page.tsx [Server Component]
+
+
+./src/components/RichTextEditor.tsx:9:1
+Export default doesn't exist in target module
+   7 | import TextAlign from "@tiptap/extension-text-align";
+   8 | import { Color } from "@tiptap/extension-color";
+>  9 | import TextStyle from "@tiptap/extension-text-style";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  10 | import Placeholder from "@tiptap/extension-placeholder";
+  11 | import Highlight from "@tiptap/extension-highlight";
+  12 | import {
+
+The export default was not found in module [project]/node_modules/@tiptap/extension-text-style/dist/index.js [app-ssr] (ecmascript).
+Did you mean to import LineHeight?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/components/RichTextEditor.tsx [Client Component Browser]
+    ./src/app/conexaolbadm/eventos/page.tsx [Client Component Browser]
+    ./src/app/conexaolbadm/eventos/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/RichTextEditor.tsx [Client Component SSR]
+    ./src/app/conexaolbadm/eventos/page.tsx [Client Component SSR]
+    ./src/app/conexaolbadm/eventos/page.tsx [Server Component]
+
+
+    at <unknown> (./src/components/RichTextEditor.tsx:9:1)
+    at <unknown> (./src/components/RichTextEditor.tsx:9:1)

@@ -2,18 +2,37 @@
 
 import { useState } from "react"
 import { Send, CheckCircle } from "lucide-react"
+import { useContacts } from "@/features/contacts/hooks/useContacts"
 
 export default function ContactForm() {
-    const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle")
+    const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
+    const { createContact } = useContacts()
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setStatus("submitting")
-        // Simulate submission
-        setTimeout(() => {
+
+        const form = e.currentTarget;
+        const formData = new FormData(form)
+        const name = formData.get("name") as string
+        const email = formData.get("email") as string
+        const subject = formData.get("subject") as string
+        const message = formData.get("message") as string
+
+        try {
+            await createContact({
+                name,
+                email,
+                subject,
+                message,
+            })
             setStatus("success")
             setTimeout(() => setStatus("idle"), 5000)
-        }, 1500)
+            form.reset()
+        } catch (error) {
+            console.error("Failed to submit contact form:", error)
+            setStatus("error")
+        }
     }
 
     if (status === "success") {
@@ -33,11 +52,18 @@ export default function ContactForm() {
             {/* Decorative dot */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -translate-y-1/2 translate-x-1/2" />
 
+            {status === "error" && (
+                <div className="bg-red-50 text-red-500 p-4 rounded-xl text-sm mb-4">
+                    Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente.
+                </div>
+            )}
+
             <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                     <label className="text-sm font-bold text-primary ml-1">Nome Completo</label>
                     <input
                         type="text"
+                        name="name"
                         placeholder="Ex: João Manuel"
                         className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-secondary focus:bg-white transition-all text-sm"
                         required
@@ -47,6 +73,7 @@ export default function ContactForm() {
                     <label className="text-sm font-bold text-primary ml-1">E-mail</label>
                     <input
                         type="email"
+                        name="email"
                         placeholder="joao@exemplo.ao"
                         className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-secondary focus:bg-white transition-all text-sm"
                         required
@@ -56,17 +83,18 @@ export default function ContactForm() {
 
             <div className="space-y-2">
                 <label className="text-sm font-bold text-primary ml-1">Assunto</label>
-                <select className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-secondary focus:bg-white transition-all text-sm appearance-none">
-                    <option>Consultoria Jurídica</option>
-                    <option>Inscrição em Eventos</option>
-                    <option>Cursos e Formação</option>
-                    <option>Outros Assuntos</option>
+                <select name="subject" className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-secondary focus:bg-white transition-all text-sm appearance-none">
+                    <option value="Consultoria Jurídica">Consultoria Jurídica</option>
+                    <option value="Inscrição em Eventos">Inscrição em Eventos</option>
+                    <option value="Cursos e Formação">Cursos e Formação</option>
+                    <option value="Outros Assuntos">Outros Assuntos</option>
                 </select>
             </div>
 
             <div className="space-y-2">
                 <label className="text-sm font-bold text-primary ml-1">Mensagem</label>
                 <textarea
+                    name="message"
                     rows={5}
                     placeholder="Como podemos ajudar?"
                     className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 focus:outline-none focus:border-secondary focus:bg-white transition-all text-sm resize-none"

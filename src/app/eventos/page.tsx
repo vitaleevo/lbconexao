@@ -1,96 +1,40 @@
 "use client"
 
+import { useState } from "react"
+
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { motion } from "framer-motion"
 import { MapPin, Clock, ArrowRight, Filter, Search, Users, Video, Map as MapIcon } from "lucide-react"
 import Link from "next/link"
+import { useEvents, useFeaturedEvent } from "@/features/events/hooks/useEvents"
+import ConvexImage from "@/components/ConvexImage"
 
 const eventCategories = ["Todos", "Conferências", "Workshops", "Mentorias", "Webinars", "Imersões"]
 
-const allEvents = [
-    {
-        id: 1,
-        title: "I Conferência de Direito Comercial Angolano",
-        description: "Um evento de alto nível reunindo os principais especialistas do país para debater o futuro das relações comerciais e investimentos estrangeiros em Angola.",
-        day: "25",
-        month: "Março",
-        fullDate: "25 de Março, 2026",
-        time: "09:00 - 17:00",
-        location: "Hotel Epic Sana, Luanda",
-        address: "Rua da Missão, Luanda, Angola",
-        type: "Conferência",
-        mode: "Presencial",
-        price: "Sob Consulta",
-        speakers: ["Dr. Luis Bastos", "Dra. Ana Paula", "Dr. João Silva"],
-        image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=1200",
-        featured: true
-    },
-    {
-        id: 2,
-        title: "Workshop: Práticas Forenses e Novos Diplomas",
-        description: "Imersão prática sobre as recentes alterações no Código de Processo Civil e Penal. Foco em petições, recursos e audiências.",
-        day: "12",
-        month: "Abril",
-        fullDate: "12 de Abril, 2026",
-        time: "14:00 - 18:30",
-        location: "Online via Zoom",
-        type: "Workshop",
-        mode: "Digital",
-        price: "15.000 Kz",
-        image: "https://images.unsplash.com/photo-1591115765373-520b7a2d7a59?q=80&w=800",
-        featured: false
-    },
-    {
-        id: 3,
-        title: "Mentoria: Gestão de Escritórios de Advocacia",
-        description: "Transforme seu escritório numa empresa lucrativa. Marketing jurídico, gestão de equipas e ferramentas digitais.",
-        day: "05",
-        month: "Maio",
-        fullDate: "05 de Maio, 2026",
-        time: "18:00 - 20:00",
-        location: "Edifício Sky Center, Luanda",
-        type: "Mentorias",
-        mode: "Híbrido",
-        price: "45.000 Kz",
-        image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=800",
-        featured: false
-    },
-    {
-        id: 4,
-        title: "Webinar: O IVA no Sector Extractivo",
-        description: "Análise detalhada sobre as isenções e regimes especiais de IVA aplicáveis às empresas de petróleo e gás em Angola.",
-        day: "20",
-        month: "Maio",
-        fullDate: "20 de Maio, 2026",
-        time: "10:00 - 11:30",
-        location: "YouTube Live / Zoom",
-        type: "Webinars",
-        mode: "Digital",
-        price: "Gratuito",
-        image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800",
-        featured: false
-    },
-    {
-        id: 5,
-        title: "Imersão Prática: Direito do Trabalho na Prática",
-        description: "Três dias de intensivo resolvendo casos reais, simulação de tribunais de trabalho e cálculos de indemnizações.",
-        day: "15-17",
-        month: "Junho",
-        fullDate: "15 a 17 de Junho, 2026",
-        time: "08:30 - 13:00",
-        location: "Centro de Formação LB, Luanda",
-        type: "Imersões",
-        mode: "Presencial",
-        price: "75.000 Kz",
-        image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=800",
-        featured: false
-    }
-]
-
 export default function EventsPage() {
-    const featuredEvent = allEvents.find(e => e.featured) || allEvents[0]
-    const otherEvents = allEvents.filter(e => !e.featured)
+    const { events: allEvents, loading: eventsLoading } = useEvents()
+    const { featuredEvent, loading: featuredLoading } = useFeaturedEvent()
+
+    const [selectedCategory, setSelectedCategory] = useState("Todos")
+    const [searchQuery, setSearchQuery] = useState("")
+
+    if (eventsLoading || featuredLoading) {
+        return (
+            <div className="min-h-screen bg-[#FCFCFD] flex items-center justify-center font-display text-primary text-2xl">
+                A carregar eventos...
+            </div>
+        )
+    }
+
+    const displayFeatured = featuredEvent || (allEvents && allEvents.length > 0 ? allEvents[0] : null)
+
+    const displayRegular = allEvents?.filter(e => e._id !== displayFeatured?._id)
+        ?.filter(e => selectedCategory === "Todos" || (e.type && e.type.toLowerCase() === selectedCategory.toLowerCase()))
+        ?.filter(e =>
+            e.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (e.location && e.location.toLowerCase().includes(searchQuery.toLowerCase()))
+        ) || []
 
     return (
         <main className="min-h-screen bg-[#FCFCFD]">
@@ -100,8 +44,8 @@ export default function EventsPage() {
             <section className="pt-32 pb-24 premium-gradient relative overflow-hidden">
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
-                    <img
-                        src="https://images.unsplash.com/photo-1517457373958-b7bdd458ad20?q=80&w=1200"
+                    <ConvexImage
+                        storageId="https://images.unsplash.com/photo-1517457373958-b7bdd458ad20?q=80&w=1200"
                         alt="Fundo Editorial"
                         className="w-full h-full object-cover opacity-20 mix-blend-overlay"
                     />
@@ -136,74 +80,79 @@ export default function EventsPage() {
             </section>
 
             {/* Featured Event Section */}
-            <section className="py-20 -mt-16 container mx-auto px-6">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    className="group bg-white rounded-[3rem] overflow-hidden shadow-2xl border border-gray-100 grid lg:grid-cols-2"
-                >
-                    <div className="relative h-80 lg:h-auto overflow-hidden">
-                        <img
-                            src={featuredEvent.image}
-                            alt={featuredEvent.title}
-                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-primary/10 mix-blend-multiply" />
-                        <div className="absolute top-8 left-8 bg-secondary text-white px-6 py-3 rounded-2xl shadow-xl">
-                            <div className="text-3xl font-display font-bold leading-none">{featuredEvent.day}</div>
-                            <div className="text-xs uppercase font-bold tracking-widest">{featuredEvent.month}</div>
-                        </div>
-                    </div>
-                    <div className="p-12 lg:p-20 flex flex-col justify-center">
-                        <div className="flex items-center space-x-3 mb-8">
-                            <span className="bg-primary/5 text-primary text-[10px] px-4 py-2 rounded-full font-bold uppercase tracking-widest border border-primary/10">Destaque do Mês</span>
-                            <span className="flex items-center text-xs text-gray-400">
-                                <Users className="w-4 h-4 mr-2 text-secondary" />
-                                +200 Participantes
-                            </span>
-                        </div>
-                        <h2 className="text-3xl md:text-5xl font-display text-primary mb-8 group-hover:text-secondary transition-colors">
-                            {featuredEvent.title}
-                        </h2>
-                        <p className="text-gray-500 text-lg mb-10 leading-relaxed">
-                            {featuredEvent.description}
-                        </p>
-                        <div className="grid sm:grid-cols-2 gap-6 mb-12">
-                            <div className="flex items-start">
-                                <Clock className="w-5 h-5 mr-4 text-secondary shrink-0" />
-                                <div>
-                                    <p className="text-xs font-bold uppercase text-gray-400 mb-1">Horário</p>
-                                    <p className="text-primary font-medium">{featuredEvent.time}</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start">
-                                <MapPin className="w-5 h-5 mr-4 text-secondary shrink-0" />
-                                <div>
-                                    <p className="text-xs font-bold uppercase text-gray-400 mb-1">Local</p>
-                                    <p className="text-primary font-medium">{featuredEvent.location}</p>
-                                </div>
+            {displayFeatured && (
+                <section className="py-20 -mt-16 container mx-auto px-6">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        className="group bg-white rounded-[3rem] overflow-hidden shadow-2xl border border-gray-100 grid lg:grid-cols-2"
+                    >
+                        <div className="relative h-80 lg:h-auto overflow-hidden bg-gray-100">
+                            <ConvexImage
+                                storageId={displayFeatured.coverImage}
+                                alt={displayFeatured.title}
+                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                fallback="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=1200"
+                            />
+                            <div className="absolute inset-0 bg-primary/10 mix-blend-multiply" />
+                            <div className="absolute top-8 left-8 bg-secondary text-white px-6 py-3 rounded-2xl shadow-xl">
+                                <div className="text-3xl font-display font-bold leading-none">{displayFeatured.date?.split(" ")[0] || "15"}</div>
+                                <div className="text-xs uppercase font-bold tracking-widest">{displayFeatured.date?.split(" ")[2] || displayFeatured.date?.split(" ")[1] || "MÊS"}</div>
                             </div>
                         </div>
-                        <Link
-                            href={`/eventos/${featuredEvent.id}`}
-                            className="secondary-gradient text-white px-10 py-5 rounded-full font-bold shadow-xl hover:scale-105 transition-all w-full sm:w-max flex items-center justify-center"
-                        >
-                            Inscrever-me Agora
-                            <ArrowRight className="ml-3 w-5 h-5" />
-                        </Link>
-                    </div>
-                </motion.div>
-            </section>
+                        <div className="p-12 lg:p-20 flex flex-col justify-center">
+                            <div className="flex items-center space-x-3 mb-8">
+                                <span className="bg-primary/5 text-primary text-[10px] px-4 py-2 rounded-full font-bold uppercase tracking-widest border border-primary/10">Destaque do Mês</span>
+                                <span className="flex items-center text-xs text-gray-400">
+                                    <Users className="w-4 h-4 mr-2 text-secondary" />
+                                    Vagas Limitadas
+                                </span>
+                            </div>
+                            <h2 className="text-3xl md:text-5xl font-display text-primary mb-8 group-hover:text-secondary transition-colors">
+                                {displayFeatured.title}
+                            </h2>
+                            <div
+                                className="text-gray-500 text-lg mb-10 leading-relaxed line-clamp-3 prose prose-slate max-w-none prose-p:my-0"
+                                dangerouslySetInnerHTML={{ __html: displayFeatured.description }}
+                            />
+                            <div className="grid sm:grid-cols-2 gap-6 mb-12">
+                                <div className="flex items-start">
+                                    <Clock className="w-5 h-5 mr-4 text-secondary shrink-0" />
+                                    <div>
+                                        <p className="text-xs font-bold uppercase text-gray-400 mb-1">Horário</p>
+                                        <p className="text-primary font-medium">{displayFeatured.time || "A Confirmar"}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start">
+                                    <MapPin className="w-5 h-5 mr-4 text-secondary shrink-0" />
+                                    <div>
+                                        <p className="text-xs font-bold uppercase text-gray-400 mb-1">Local</p>
+                                        <p className="text-primary font-medium">{displayFeatured.location}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <Link
+                                href={`/eventos/${displayFeatured._id}`}
+                                className="secondary-gradient text-white px-10 py-5 rounded-full font-bold shadow-xl hover:scale-105 transition-all w-full sm:w-max flex items-center justify-center"
+                            >
+                                Inscrever-me Agora
+                                <ArrowRight className="ml-3 w-5 h-5" />
+                            </Link>
+                        </div>
+                    </motion.div>
+                </section>
+            )}
 
             {/* Content & Filters */}
             <section className="pb-32 container mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-8 pb-10 border-b border-gray-100">
                     <div className="flex overflow-x-auto gap-3 pb-2 no-scrollbar w-full md:w-auto">
-                        {eventCategories.map((cat, i) => (
+                        {eventCategories.map((cat) => (
                             <button
                                 key={cat}
-                                className={`px-6 py-2.5 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${i === 0 ? 'bg-primary text-white shadow-lg' : 'bg-white border border-gray-100 text-primary/40 hover:border-secondary/30'}`}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`px-6 py-2.5 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${selectedCategory === cat ? 'bg-primary text-white shadow-lg' : 'bg-white border border-gray-100 text-primary/40 hover:border-secondary/30'}`}
                             >
                                 {cat}
                             </button>
@@ -214,6 +163,8 @@ export default function EventsPage() {
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                             <input
                                 type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Procurar evento..."
                                 className="w-full pl-11 pr-4 py-3 rounded-2xl border border-gray-100 bg-white text-sm focus:outline-none focus:border-secondary transition-all"
                             />
@@ -224,69 +175,74 @@ export default function EventsPage() {
                     </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-12">
-                    {otherEvents.map((event, index) => (
-                        <motion.div
-                            key={event.id}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1, duration: 0.8 }}
-                            viewport={{ once: true }}
-                            className="group flex flex-col lg:flex-row bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden hover:shadow-2xl hover:border-secondary/20 transition-all duration-500"
-                        >
-                            <div className="lg:w-2/5 relative h-64 lg:h-auto">
-                                <img
-                                    src={event.image}
-                                    alt={event.title}
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                />
-                                <div className="absolute top-4 left-4">
-                                    <span className={`px-4 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest backdrop-blur-md shadow-lg flex items-center ${event.mode === 'Digital' ? 'bg-blue-500/90 text-white' : 'bg-white/90 text-primary'}`}>
-                                        {event.mode === 'Digital' ? <Video className="w-3 h-3 mr-2" /> : <MapIcon className="w-3 h-3 mr-2" />}
-                                        {event.mode}
-                                    </span>
+                {displayRegular && displayRegular.length > 0 ? (
+                    <div className="grid md:grid-cols-2 gap-12">
+                        {displayRegular.map((event, index) => (
+                            <motion.div
+                                key={event._id}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1, duration: 0.8 }}
+                                viewport={{ once: true }}
+                                className="group flex flex-col lg:flex-row bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden hover:shadow-2xl hover:border-secondary/20 transition-all duration-500"
+                            >
+                                <div className="lg:w-2/5 relative h-64 lg:h-auto bg-gray-100">
+                                    <ConvexImage
+                                        storageId={event.coverImage}
+                                        alt={event.title}
+                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                        fallback="https://images.unsplash.com/photo-1591115765373-520b7a2d7a59?q=80&w=800"
+                                    />
+                                    <div className="absolute top-4 left-4">
+                                        <span className={`px-4 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest backdrop-blur-md shadow-lg flex items-center ${event.mode === 'Digital' ? 'bg-blue-500/90 text-white' : 'bg-white/90 text-primary'}`}>
+                                            {event.mode === 'Digital' ? <Video className="w-3 h-3 mr-2" /> : <MapIcon className="w-3 h-3 mr-2" />}
+                                            {event.mode || "Evento"}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="lg:w-3/5 p-8 lg:p-10 flex flex-col">
-                                <div className="flex justify-between items-start mb-6">
-                                    <div className="flex items-center">
-                                        <div className="mr-4">
-                                            <div className="text-2xl font-display font-bold text-primary group-hover:text-secondary transition-colors">{event.day}</div>
-                                            <div className="text-[10px] font-bold uppercase text-gray-400 tracking-tighter">{event.month}</div>
+                                <div className="lg:w-3/5 p-8 lg:p-10 flex flex-col">
+                                    <div className="flex justify-between items-start mb-6">
+                                        <div className="flex items-center">
+                                            <div className="mr-4">
+                                                <div className="text-2xl font-display font-bold text-primary group-hover:text-secondary transition-colors">{event.date?.split(" ")[0] || "15"}</div>
+                                                <div className="text-[10px] font-bold uppercase text-gray-400 tracking-tighter">{event.date?.split(" ")[2] || event.date?.split(" ")[1] || "MÊS"}</div>
+                                            </div>
+                                            <div className="w-px h-8 bg-gray-100 mx-4" />
+                                            <span className="text-[10px] font-bold uppercase tracking-widest text-secondary">{event.type || "Categoria"}</span>
                                         </div>
-                                        <div className="w-px h-8 bg-gray-100 mx-4" />
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-secondary">{event.type}</span>
+                                        <div className="text-right">
+                                            <p className="text-[10px] uppercase font-bold text-gray-300">Investimento</p>
+                                            <p className="text-sm font-bold text-primary">{event.price || "Sob Consulta"}</p>
+                                        </div>
                                     </div>
-                                    <div className="text-right">
-                                        <p className="text-[10px] uppercase font-bold text-gray-300">Investimento</p>
-                                        <p className="text-sm font-bold text-primary">{event.price}</p>
+                                    <h3 className="text-xl font-bold text-primary mb-6 group-hover:text-secondary transition-colors leading-snug">
+                                        {event.title}
+                                    </h3>
+                                    <div className="space-y-4 mb-8">
+                                        <div className="flex items-center text-sm text-gray-400 italic">
+                                            <Clock className="w-4 h-4 mr-3 text-secondary" />
+                                            {event.time || "A Confirmar"}
+                                        </div>
+                                        <div className="flex items-center text-sm text-gray-400">
+                                            <MapPin className="w-4 h-4 mr-3 text-secondary" />
+                                            <span className="line-clamp-1">{event.location}</span>
+                                        </div>
+                                    </div>
+                                    <div className="mt-auto pt-6 border-t border-gray-50">
+                                        <Link
+                                            href={`/eventos/${event._id}`}
+                                            className="inline-block w-full py-4 rounded-2xl bg-primary/5 text-primary text-xs font-bold uppercase tracking-widest hover:bg-secondary hover:text-white transition-all text-center"
+                                        >
+                                            Saber Mais & Reserva
+                                        </Link>
                                     </div>
                                 </div>
-                                <h3 className="text-xl font-bold text-primary mb-6 group-hover:text-secondary transition-colors leading-snug">
-                                    {event.title}
-                                </h3>
-                                <div className="space-y-4 mb-8">
-                                    <div className="flex items-center text-sm text-gray-400 italic">
-                                        <Clock className="w-4 h-4 mr-3 text-secondary" />
-                                        {event.time}
-                                    </div>
-                                    <div className="flex items-center text-sm text-gray-400">
-                                        <MapPin className="w-4 h-4 mr-3 text-secondary" />
-                                        <span className="line-clamp-1">{event.location}</span>
-                                    </div>
-                                </div>
-                                <div className="mt-auto pt-6 border-t border-gray-50">
-                                    <Link
-                                        href={`/eventos/${event.id}`}
-                                        className="inline-block w-full py-4 rounded-2xl bg-primary/5 text-primary text-xs font-bold uppercase tracking-widest hover:bg-secondary hover:text-white transition-all text-center"
-                                    >
-                                        Saber Mais & Reserva
-                                    </Link>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-20 text-gray-400">Nenhum evento agendado no momento.</div>
+                )}
 
                 {/* Newsletter Box */}
                 <motion.div

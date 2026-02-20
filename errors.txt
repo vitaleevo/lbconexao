@@ -1,1 +1,0 @@
-src/components/BlogPeek.tsx(108,63): error TS2339: Property 'id' does not exist on type '{ title: string; category: string; date: string; author: string; readTime: string; excerpt: string; image: string; }'.
