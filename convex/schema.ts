@@ -49,5 +49,7 @@ export default defineSchema({
         phone: v.optional(v.string()),
         bio: v.optional(v.string()),
         avatar: v.optional(v.string()),
+        failedAttempts: v.optional(v.number()),
+        lockUntil: v.optional(v.number()),
     }).index("by_email", ["email"]),
 });

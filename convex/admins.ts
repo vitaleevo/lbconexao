@@ -36,13 +36,32 @@ export const login = mutation({
             .unique();
 
         if (!admin) {
-            return { success: false, message: "Administrador não encontrado." };
+            return { success: false, message: "Credenciais inválidas." };
+        }
+
+        // Check if account is locked
+        if (admin.lockUntil && admin.lockUntil > Date.now()) {
+            const minutesLeft = Math.ceil((admin.lockUntil - Date.now()) / 60000);
+            return { success: false, message: `Conta bloqueada. Tente novamente em ${minutesLeft} minutos.` };
         }
 
         const hashedPassword = await hashPassword(args.password);
-        if (hashedPassword !== admin.password) {
-            return { success: false, message: "Senha incorreta." };
+
+        if (admin.password !== hashedPassword) {
+            const attempts = (admin.failedAttempts || 0) + 1;
+            const updates: any = { failedAttempts: attempts };
+
+            if (attempts >= 5) {
+                updates.lockUntil = Date.now() + 15 * 60 * 1000; // 15 minutes lock
+                updates.failedAttempts = 0; // Reset after lock
+            }
+
+            await ctx.db.patch(admin._id, updates);
+            return { success: false, message: "Credenciais inválidas." };
         }
+
+        // Success: reset attempts
+        await ctx.db.patch(admin._id, { failedAttempts: 0, lockUntil: 0 });
 
         return {
             success: true,
