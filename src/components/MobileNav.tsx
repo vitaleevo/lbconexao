@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { Home, User, Briefcase, BookOpen, Calendar, Mail, FileText, ChevronRight, X, ArrowRight, Instagram, Linkedin, Facebook } from "lucide-react"
+import { Home, User, Briefcase, BookOpen, Calendar, Mail, ChevronRight, ArrowRight, Instagram, Linkedin, Facebook } from "lucide-react"
 
 export default function MobileNavigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)

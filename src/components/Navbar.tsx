@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Menu, X, ChevronRight } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 
 import MobileNavigation from "./MobileNav"
 
