@@ -1,0 +1,31 @@
+
+> lbconexao@0.1.0 build
+> next build
+
+   Γû▓ Next.js 15.1.7
+   - Experiments (use with caution):
+     ┬╖ optimizeCss
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully
+   Linting and checking validity of types ...
+
+Failed to compile.
+
+./src/app/blog/page.tsx
+6:46  Error: 'Tag' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/blog/[id]/page.tsx
+6:10  Error: 'ChevronRight' is defined but never used.  @typescript-eslint/no-unused-vars
+6:34  Error: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/eventos/page.tsx
+6:10  Error: 'Calendar' is defined but never used.  @typescript-eslint/no-unused-vars
+7:8  Error: 'Link' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/servicos/page.tsx
+9:5  Error: 'BookOpen' is defined but never used.  @typescript-eslint/no-unused-vars
+179:25  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+179:107  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
