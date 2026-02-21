@@ -9,17 +9,48 @@ interface ConvexImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 }
 
 export default function ConvexImage({ storageId, fallback, ...props }: ConvexImageProps) {
-    // If storageId is a URL or doesn't look like a storageId, just use it
+    // Check if it's a URL
     const isUrl = storageId?.startsWith('http') || storageId?.startsWith('data:') || storageId?.includes('/');
 
-    // We only call the query if it looks like a storageId and isn't a URL
+    // Call query if it looks like a storageId
     const imageUrl = useQuery(api.files.getUrl,
         storageId && !isUrl ? { storageId: storageId as any } : "skip"
     );
 
-    const finalSrc = isUrl ? storageId : (imageUrl || fallback);
+    // If it's a URL, use it directly. 
+    // If it's a storageId, use the fetched URL or the fallback while loading/error.
+    let finalSrc = isUrl ? storageId : (imageUrl || fallback);
 
-    if (!finalSrc && !props.src) return <div className={props.className + " bg-gray-100 flex items-center justify-center text-gray-400"}>Sem imagem</div>;
+    // If still undefined (no storageId, or loading with no fallback), use the fallback URL provided in props or default
+    if (!finalSrc && !props.src) {
+        if (storageId === undefined || storageId === "") {
+            finalSrc = fallback;
+        } else if (imageUrl === undefined) {
+            // Still loading the storage URL, use fallback for now
+            finalSrc = fallback;
+        }
+    }
 
-    return <img {...props} src={finalSrc || props.src} />;
+    // If we have nothing at all after checking everything
+    if (!finalSrc && !props.src) {
+        return (
+            <div className={`${props.className} bg-gray-50 flex flex-col items-center justify-center text-[10px] text-gray-400 uppercase font-bold tracking-widest text-center px-4`}>
+                <div className="w-8 h-8 rounded-full border-2 border-gray-100 border-t-secondary animate-spin mb-2" />
+                Carregando...
+            </div>
+        );
+    }
+
+    return (
+        <img
+            {...props}
+            src={finalSrc || props.src}
+            onError={(e) => {
+                // If the image fails to load, try to use the fallback
+                if (fallback && (e.target as HTMLImageElement).src !== fallback) {
+                    (e.target as HTMLImageElement).src = fallback;
+                }
+            }}
+        />
+    );
 }

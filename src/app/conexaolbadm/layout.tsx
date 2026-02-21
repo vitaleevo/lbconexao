@@ -10,22 +10,19 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import ConvexImage from "@/components/ConvexImage";
 
 function AdminSidebarAvatar({ adminId }: { adminId: string }) {
     const adminData = useQuery(api.admins.getById, adminId ? { adminId: adminId as any } : "skip");
 
-    // Check for storageId or direct URL
-    const isUrl = adminData?.avatar?.startsWith('http') || adminData?.avatar?.startsWith('data:');
-    const storageUrl = useQuery(api.files.getUrl,
-        adminData?.avatar && !isUrl ? { storageId: adminData.avatar as any } : "skip"
-    );
-
-    const avatarUrl = isUrl ? adminData?.avatar : storageUrl;
-
     return (
-        <div className="w-10 h-10 rounded-xl bg-white/10 overflow-hidden flex items-center justify-center border border-white/10">
-            {avatarUrl ? (
-                <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+        <div className="w-10 h-10 rounded-xl bg-white/10 overflow-hidden flex items-center justify-center border border-white/10 relative">
+            {adminData?.avatar ? (
+                <ConvexImage
+                    storageId={adminData.avatar}
+                    alt="Avatar"
+                    className="w-full h-full object-cover"
+                />
             ) : adminData ? (
                 <User className="w-5 h-5 text-secondary" />
             ) : (
