@@ -45,7 +45,8 @@ export default function Hero() {
                         </h1>
 
                         <p className="text-xl text-white/60 mb-12 max-w-xl leading-relaxed font-light">
-                            Unimos a tradição jurídica à inovação prática. A LB Conexão é o ponto de encontro entre
+                            <span className="text-secondary-light font-medium block mb-2">Conexão Jurídica Angola</span>
+                            Unimos a tradição jurídica à inovação prática. A <span className="text-white font-medium italic">LB Conexão</span> é o ponto de encontro entre
                             <span className="text-secondary-light font-medium"> especialistas </span> e o
                             <span className="text-white font-medium"> sucesso empresarial </span> em Angola.
                         </p>

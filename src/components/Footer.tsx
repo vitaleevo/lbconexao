@@ -59,7 +59,10 @@ export default function Footer() {
                             </li>
                             <li className="flex items-start">
                                 <MapPin className="w-5 h-5 mr-4 text-secondary shrink-0" />
-                                <span>Rua Kwame Nkrumah, Maianga<br />Luanda, Angola</span>
+                                <span>
+                                    <strong>Sede:</strong> Rua Kwame Nkrumah, Maianga, Luanda<br />
+                                    <strong>Escritório:</strong> Talatona Business Park, Edf. K-Sul, 6.º Andar
+                                </span>
                             </li>
                         </ul>
                     </div>

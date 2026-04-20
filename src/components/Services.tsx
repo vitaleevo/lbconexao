@@ -7,28 +7,28 @@ import Link from "next/link"
 export default function Services() {
     const services = [
         {
-            title: "Cursos e Capacitações",
-            description: "Imersões teóricas e práticas focadas no contexto jurídico angolano, do Comercial ao Fiscal.",
-            icon: <GraduationCap className="w-10 h-10" />,
-            accent: "bg-blue-500/10"
-        },
-        {
-            title: "Eventos e Networking",
-            description: "Conferências de alto nível e workshops que promovem atualização e conexões estratégicas.",
-            icon: <Users className="w-10 h-10" />,
-            accent: "bg-secondary/10"
-        },
-        {
-            title: "Soluções Jurídicas",
-            description: "Acompanhamento educacional e consultoria de excelência para profissionais e empresas.",
+            title: "Consultoria Jurídica",
+            description: "Assessoria especializada em Direito Comercial, Laboral, Fiscal e Telecomunicações no contexto angolano.",
             icon: <Scale className="w-10 h-10" />,
             accent: "bg-primary/10"
         },
         {
-            title: "Orientação Profissional",
-            description: "Simulação de tribunais e networking orientado para o desenvolvimento de novos talentos.",
+            title: "Assessoria Empresarial",
+            description: "Especialistas em Direito Imobiliário, Sucessório e Escrituras Públicas para empresas e investidores.",
             icon: <Briefcase className="w-10 h-10" />,
             accent: "bg-green-500/10"
+        },
+        {
+            title: "Eventos e Networking",
+            description: "Nossos palcos promovem conexões de excelência, como a Imersão Jurídica e Masterclass de Defesa.",
+            icon: <Users className="w-10 h-10" />,
+            accent: "bg-secondary/10"
+        },
+        {
+            title: "Formações Especializadas",
+            description: "Capacitações práticas em Processo do Trabalho, Sociedades Comerciais e legislação contemporânea.",
+            icon: <GraduationCap className="w-10 h-10" />,
+            accent: "bg-blue-500/10"
         },
     ]
 

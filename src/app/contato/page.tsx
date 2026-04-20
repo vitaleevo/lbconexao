@@ -95,7 +95,10 @@ export default function ContatoPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-primary text-lg mb-1">Localização</h3>
-                    <p className="text-gray-500">Rua Kwame Nkrumah, Maianga<br />Luanda, Angola</p>
+                    <p className="text-gray-500">
+                      <strong>Sede:</strong> Rua Kwame Nkrumah, Maianga, Luanda<br />
+                      <strong>Escritório:</strong> Talatona Business Park, Edf. K-Sul, 6.º Andar
+                    </p>
                   </div>
                 </div>
               </div>

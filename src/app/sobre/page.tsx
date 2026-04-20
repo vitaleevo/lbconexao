@@ -76,12 +76,12 @@ export default function SobrePage() {
               </h2>
               <div className="space-y-6 text-gray-500 leading-relaxed">
                 <p>
-                  A LB Conexão Jurídica nasceu da visão de Luis Bastos de criar uma plataforma que verdadeiramente
+                  A LB Conexão Jurídica nasceu da visão de Luis Miguel Bastos de criar uma plataforma que verdadeiramente
                   conectasse profissionais do direito em Angola, oferecendo não apenas serviços jurídicos de excelência,
                   mas também oportunidades de crescimento e desenvolvimento profissional.
                 </p>
                 <p>
-                  Com mais de 15 anos de experiência no mercado jurídico angolano, identificámos a necessidade de criar
+                  Com mais de 9 anos de experiência no mercado jurídico angolano, identificámos a necessidade de criar
                   um espaço onde profissionais pudessem não apenas receber consultoria especializada, mas também participar
                   de eventos enriquecedores e formações que os preparassem para os desafios do mercado moderno.
                 </p>
@@ -108,8 +108,8 @@ export default function SobrePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-60" />
                 <div className="absolute bottom-12 left-12 right-12 z-10">
                   <div className="h-1 w-16 bg-secondary mb-6" />
-                  <h3 className="text-3xl font-display text-white mb-3">Luis Bastos</h3>
-                  <p className="text-white/60 text-sm">Fundador & CEO — Mais de 15 anos de experiência em direito empresarial e consultoria jurídica em Angola.</p>
+                  <h3 className="text-3xl font-display text-white mb-3">Dr. Luís Miguel Bastos</h3>
+                  <p className="text-white/60 text-sm">Fundador & Coordenador — Mais de 9 anos de experiência em direito empresarial e consultoria jurídica em Angola.</p>
                 </div>
               </div>
             </motion.div>
@@ -133,9 +133,7 @@ export default function SobrePage() {
               </div>
               <h2 className="text-3xl font-display text-primary mb-6">Nossa Missão</h2>
               <p className="text-gray-500 leading-relaxed text-lg">
-                Fortalecer a comunidade jurídica angolana através de conexões profissionais,
-                consultoria especializada no direito angolano e eventos que promovam a excelência
-                e o desenvolvimento contínuo dos profissionais.
+                Fortalecer a comunidade jurídica angolana através de conexões profissionais, consultoria especializada no direito angolano e eventos que promovam a excelência e o desenvolvimento contínuo dos profissionais.
               </p>
             </motion.div>
 
