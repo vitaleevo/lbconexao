@@ -8,7 +8,9 @@ import ConvexImage from "@/components/ConvexImage"
 
 export default function BlogPeek() {
     const { posts, loading } = useBlogPosts()
-    const displayPosts = posts ? posts.slice(0, 3) : []
+    const displayPosts = posts 
+        ? posts.filter(p => p.slug !== "problematica-providencias-cautelares-cpt").slice(0, 3) 
+        : []
 
     if (loading) {
         return (

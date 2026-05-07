@@ -17,17 +17,6 @@ export const populate = mutation({
                 coverImage: ""
             },
             {
-                title: "A Problemática das Providências Cautelares no CPT",
-                slug: "problematica-providencias-cautelares-cpt",
-                excerpt: "Uma análise técnica sobre a celeridade e eficácia das medidas cautelares no Direito do Trabalho angolano.",
-                content: "<p>Durante a nossa mais recente imersão, debatemos a fundo como o Código de Processo do Trabalho lida com as providências cautelares. A necessidade de uma justiça mais rápida é um grito comum entre os operadores do direito.</p>",
-                author: "LB Conexão Jurídica",
-                readTime: "5 min",
-                published: true,
-                featured: false,
-                coverImage: ""
-            },
-            {
                 title: "Inauguração da Nova Plataforma Digital LB Conexão",
                 slug: "inauguracao-plataforma-digital-lb",
                 excerpt: "Estamos a digitalizar a conexão entre profissionais do direito em toda Angola com o lançamento do nosso novo portal informativo.",

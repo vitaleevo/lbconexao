@@ -11,8 +11,11 @@ import ConvexImage from "@/components/ConvexImage"
 const categories = ["Todos", "Direito do Trabalho", "Direito Comercial", "Direito Fiscal", "Consultoria", "Dicas Práticas"]
 
 export default function BlogPage() {
-    const { posts: allPosts, loading: postsLoading } = useBlogPosts()
-    const { featuredPost, loading: featuredLoading } = useFeaturedPost()
+    const { posts: allPostsRaw, loading: postsLoading } = useBlogPosts()
+    const allPosts = allPostsRaw?.filter(p => p.slug !== "problematica-providencias-cautelares-cpt")
+    const { featuredPost: featuredPostRaw, loading: featuredLoading } = useFeaturedPost()
+    const featuredPost = featuredPostRaw?.slug === "problematica-providencias-cautelares-cpt" ? undefined : featuredPostRaw
+
 
     // Loading state while fetching from Convex
     if (postsLoading || featuredLoading) {
